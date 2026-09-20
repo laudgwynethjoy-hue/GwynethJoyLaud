@@ -18,6 +18,7 @@ def get_student():
         "section": "B"
     })
 
+# Hello Route
 @app.route('/hello')
 def say_hello():
     name = request.args.get('name', 'Student')
@@ -25,5 +26,21 @@ def say_hello():
         "message": f"Hello, {name}!"
     })
 
+# Skills Endpoint
+@app.route('/skills')
+def get_skills():
+    return jsonify({
+        "student": "Gwyneth Joy Laud",
+        "skills": [
+            "Python",
+            "Flask",
+            "HTML",
+            "CSS",
+            "JavaScript",
+            "MySQL"
+        ]
+    })
+
+# Run the App
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
