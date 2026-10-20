@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,8 +15,13 @@
             margin: 0;
             min-height: 100vh;
             padding: 40px 20px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: #26304a;
+            background: linear-gradient(
+                135deg,
+                #fff9c4,
+                #fff0a8,
+                #ffe082
+            );
+            color: #5c4b20;
         }
 
         .container {
@@ -27,7 +31,7 @@
 
         .header {
             text-align: center;
-            color: white;
+            color: #72551b;
             margin-bottom: 30px;
         }
 
@@ -39,29 +43,31 @@
         .header h1 {
             font-size: 32px;
             margin: 0 0 10px;
+            color: #795b12;
         }
 
         .header p {
             font-size: 15px;
-            opacity: 0.9;
+            color: #826b37;
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.97);
+            background: rgba(255, 255, 255, 0.96);
             padding: 28px;
             margin-bottom: 22px;
             border-radius: 18px;
-            box-shadow: 0 12px 30px rgba(27, 20, 70, 0.18);
+            border: 1px solid #fff0b3;
+            box-shadow: 0 12px 30px rgba(145, 110, 20, 0.13);
         }
 
         .card h2 {
             margin-top: 0;
-            color: #5145cd;
+            color: #b8860b;
             font-size: 22px;
         }
 
         .description {
-            color: #6b7280;
+            color: #8c7b52;
             font-size: 14px;
             margin-bottom: 20px;
         }
@@ -70,8 +76,12 @@
             padding: 12px 18px;
             border: none;
             border-radius: 10px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
+            background: linear-gradient(
+                135deg,
+                #fdd835,
+                #f9a825
+            );
+            color: #5c4300;
             font-size: 14px;
             font-weight: bold;
             cursor: pointer;
@@ -79,8 +89,13 @@
         }
 
         button:hover {
+            background: linear-gradient(
+                135deg,
+                #fbc02d,
+                #f9a825
+            );
             transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(102, 126, 234, 0.35);
+            box-shadow: 0 6px 15px rgba(249, 168, 37, 0.3);
         }
 
         button:active {
@@ -91,19 +106,26 @@
             width: 100%;
             padding: 13px;
             margin-bottom: 12px;
-            border: 1px solid #d8dcef;
+            border: 1px solid #f0d879;
             border-radius: 10px;
             font-size: 14px;
             outline: none;
+            background: #fffdf5;
+            color: #5c4b20;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        input:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12);
+        input::placeholder {
+            color: #b5a574;
         }
 
-        #result {
+        input:focus {
+            border-color: #fbc02d;
+            box-shadow: 0 0 0 3px rgba(251, 192, 45, 0.2);
+        }
+
+        #result,
+        #skillsResult {
             margin-top: 20px;
         }
 
@@ -113,38 +135,53 @@
             gap: 12px;
             padding: 13px;
             margin-bottom: 9px;
-            background: #f5f6ff;
+            background: #fffbea;
             border-radius: 9px;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid #fbc02d;
         }
 
         .student-detail strong {
-            color: #555b73;
+            color: #89713b;
         }
 
         .student-detail span {
             text-align: right;
             overflow-wrap: anywhere;
-            color: #353b63;
+            color: #5c4b20;
         }
 
         #greeting {
             margin-bottom: 0;
             margin-top: 18px;
             padding: 15px;
-            background: #f0fdf4;
+            background: #fff8dc;
+            border: 1px solid #ffec9e;
             border-radius: 10px;
-            color: #15803d;
+            color: #896404;
             font-weight: bold;
             display: none;
         }
 
+        .skill-item {
+            padding: 12px 15px;
+            margin: 10px 0;
+            background: #fff8dc;
+            border-left: 4px solid #f9c846;
+            border-radius: 9px;
+            color: #87651b;
+            font-weight: 500;
+        }
+
+        .skills-heading {
+            color: #b8860b;
+            margin-top: 20px;
+        }
+
         .footer {
             text-align: center;
-            color: white;
+            color: #80652b;
             font-size: 13px;
             padding: 10px;
-            opacity: 0.9;
         }
 
         @media (max-width: 500px) {
@@ -168,6 +205,10 @@
             .student-detail span {
                 text-align: left;
             }
+
+            button {
+                max-width: 100%;
+            }
         }
     </style>
 </head>
@@ -181,6 +222,7 @@
             <p>Your student information, one click away.</p>
         </header>
 
+        <!-- Student Information API -->
         <section class="card">
             <h2>📚 Student Information</h2>
             <p class="description">
@@ -191,9 +233,10 @@
                 ✨ Load Student Information
             </button>
 
-            <div id="result"></div>
+            <div id="result" aria-live="polite"></div>
         </section>
 
+        <!-- Greeting API -->
         <section class="card">
             <h2>💬 Greeting API</h2>
             <p class="description">
@@ -204,6 +247,7 @@
                 type="text"
                 id="nameInput"
                 placeholder="✏️ Enter your first name"
+                aria-label="Enter your first name"
             >
 
             <button onclick="sayHello()">
@@ -213,23 +257,39 @@
             <p id="greeting" aria-live="polite"></p>
         </section>
 
+        <!-- Custom Skills API -->
+        <section class="card">
+            <h2>🚀 My Skills API</h2>
+            <p class="description">
+                Discover my skills using my custom API endpoint.
+            </p>
+
+            <button onclick="loadSkills()">
+                💡 Load My Skills
+            </button>
+
+            <div id="skillsResult" aria-live="polite"></div>
+        </section>
+
         <footer class="footer">
-            Made with 💜 | Student API Interface
+            Made with 💛 | Student API Interface
         </footer>
 
     </div>
 
     <script>
+        // Student Information API
         function loadStudent() {
             const result = document.getElementById('result');
 
-            result.innerHTML = '<p>⏳ Loading student information...</p>';
+            result.textContent = '⏳ Loading student information...';
 
             fetch('/student')
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Failed to load student data');
                     }
+
                     return response.json();
                 })
                 .then(data => {
@@ -266,7 +326,8 @@
 
                     result.querySelectorAll('.student-detail span')
                         .forEach((element, index) => {
-                            element.textContent = values[index] ?? 'Not available';
+                            element.textContent =
+                                values[index] ?? 'Not available';
                         });
                 })
                 .catch(error => {
@@ -275,14 +336,18 @@
                 });
         }
 
+        // Greeting API
         function sayHello() {
-            const name = document.getElementById('nameInput').value.trim();
+            const name =
+                document.getElementById('nameInput').value.trim();
+
             const greeting = document.getElementById('greeting');
 
             greeting.style.display = 'block';
 
             if (!name) {
-                greeting.textContent = '😊 Please enter your first name!';
+                greeting.textContent =
+                    '😊 Please enter your first name!';
                 return;
             }
 
@@ -293,10 +358,11 @@
                     if (!response.ok) {
                         throw new Error('Failed to retrieve greeting');
                     }
+
                     return response.json();
                 })
                 .then(data => {
-                    greeting.textContent = '💜 ' + data.message;
+                    greeting.textContent = '💛 ' + data.message;
                 })
                 .catch(error => {
                     greeting.textContent =
@@ -304,6 +370,58 @@
                 });
         }
 
+        // Custom Skills API
+        function loadSkills() {
+            const result = document.getElementById('skillsResult');
+
+            result.textContent = '⏳ Loading skills...';
+
+            fetch('/skills')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to load skills');
+                    }
+
+                    return response.json();
+                })
+                .then(data => {
+                    result.innerHTML = '';
+
+                    const heading = document.createElement('h3');
+                    heading.className = 'skills-heading';
+                    heading.textContent = data.name || 'My Skills';
+
+                    result.appendChild(heading);
+
+                    if (!Array.isArray(data.skills)) {
+                        throw new Error('Invalid skills data format');
+                    }
+
+                    if (data.skills.length === 0) {
+                        result.appendChild(
+                            document.createTextNode(
+                                'No skills available yet.'
+                            )
+                        );
+                        return;
+                    }
+
+                    data.skills.forEach(skill => {
+                        const item = document.createElement('div');
+
+                        item.className = 'skill-item';
+                        item.textContent = '⭐ ' + skill;
+
+                        result.appendChild(item);
+                    });
+                })
+                .catch(error => {
+                    result.textContent =
+                        '❌ Unable to retrieve skills. Check your /skills endpoint.';
+                });
+        }
+
+        // Press Enter to submit the greeting
         document.getElementById('nameInput')
             .addEventListener('keydown', event => {
                 if (event.key === 'Enter') {
