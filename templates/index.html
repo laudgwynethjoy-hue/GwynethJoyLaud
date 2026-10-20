@@ -1,0 +1,315 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student API Interface</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #26304a;
+        }
+
+        .container {
+            max-width: 760px;
+            margin: auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header .icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin: 0 0 10px;
+        }
+
+        .header p {
+            font-size: 15px;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.97);
+            padding: 28px;
+            margin-bottom: 22px;
+            border-radius: 18px;
+            box-shadow: 0 12px 30px rgba(27, 20, 70, 0.18);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            color: #5145cd;
+            font-size: 22px;
+        }
+
+        .description {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 12px 18px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(102, 126, 234, 0.35);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            margin-bottom: 12px;
+            border: 1px solid #d8dcef;
+            border-radius: 10px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12);
+        }
+
+        #result {
+            margin-top: 20px;
+        }
+
+        .student-detail {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 13px;
+            margin-bottom: 9px;
+            background: #f5f6ff;
+            border-radius: 9px;
+            border-left: 4px solid #667eea;
+        }
+
+        .student-detail strong {
+            color: #555b73;
+        }
+
+        .student-detail span {
+            text-align: right;
+            overflow-wrap: anywhere;
+            color: #353b63;
+        }
+
+        #greeting {
+            margin-bottom: 0;
+            margin-top: 18px;
+            padding: 15px;
+            background: #f0fdf4;
+            border-radius: 10px;
+            color: #15803d;
+            font-weight: bold;
+            display: none;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            font-size: 13px;
+            padding: 10px;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 500px) {
+            body {
+                padding: 25px 14px;
+            }
+
+            .header h1 {
+                font-size: 26px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .student-detail {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .student-detail span {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <header class="header">
+            <div class="icon">🎓</div>
+            <h1>Student API Portal</h1>
+            <p>Your student information, one click away.</p>
+        </header>
+
+        <section class="card">
+            <h2>📚 Student Information</h2>
+            <p class="description">
+                Click below to retrieve student details from the API.
+            </p>
+
+            <button onclick="loadStudent()">
+                ✨ Load Student Information
+            </button>
+
+            <div id="result"></div>
+        </section>
+
+        <section class="card">
+            <h2>💬 Greeting API</h2>
+            <p class="description">
+                Enter your first name and let the API greet you!
+            </p>
+
+            <input
+                type="text"
+                id="nameInput"
+                placeholder="✏️ Enter your first name"
+            >
+
+            <button onclick="sayHello()">
+                👋 Say Hello
+            </button>
+
+            <p id="greeting" aria-live="polite"></p>
+        </section>
+
+        <footer class="footer">
+            Made with 💜 | Student API Interface
+        </footer>
+
+    </div>
+
+    <script>
+        function loadStudent() {
+            const result = document.getElementById('result');
+
+            result.innerHTML = '<p>⏳ Loading student information...</p>';
+
+            fetch('/student')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to load student data');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    result.innerHTML = `
+                        <div class="student-detail">
+                            <strong>🪪 Student ID</strong>
+                            <span></span>
+                        </div>
+                        <div class="student-detail">
+                            <strong>👤 Full Name</strong>
+                            <span></span>
+                        </div>
+                        <div class="student-detail">
+                            <strong>💻 Program</strong>
+                            <span></span>
+                        </div>
+                        <div class="student-detail">
+                            <strong>📅 Year Level</strong>
+                            <span></span>
+                        </div>
+                        <div class="student-detail">
+                            <strong>🏫 Section</strong>
+                            <span></span>
+                        </div>
+                    `;
+
+                    const values = [
+                        data.student_id,
+                        data.name,
+                        data.program,
+                        data.year,
+                        data.section
+                    ];
+
+                    result.querySelectorAll('.student-detail span')
+                        .forEach((element, index) => {
+                            element.textContent = values[index] ?? 'Not available';
+                        });
+                })
+                .catch(error => {
+                    result.textContent =
+                        '❌ Unable to retrieve student information.';
+                });
+        }
+
+        function sayHello() {
+            const name = document.getElementById('nameInput').value.trim();
+            const greeting = document.getElementById('greeting');
+
+            greeting.style.display = 'block';
+
+            if (!name) {
+                greeting.textContent = '😊 Please enter your first name!';
+                return;
+            }
+
+            greeting.textContent = '⏳ Preparing your greeting...';
+
+            fetch('/hello?name=' + encodeURIComponent(name))
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to retrieve greeting');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    greeting.textContent = '💜 ' + data.message;
+                })
+                .catch(error => {
+                    greeting.textContent =
+                        '❌ Unable to retrieve greeting. Please try again.';
+                });
+        }
+
+        document.getElementById('nameInput')
+            .addEventListener('keydown', event => {
+                if (event.key === 'Enter') {
+                    sayHello();
+                }
+            });
+    </script>
+</body>
+</html>

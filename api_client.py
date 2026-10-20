@@ -1,17 +1,45 @@
+from flask import Flask, jsonify, request, render_template
 
-import requests
+app = Flask(__name__)
 
-url = "https://gwynethjoylaud-1.onrender.com/skills"
+# Home Route - Display the Web Interface
+@app.route('/')
+def home():
+    return render_template('index.html')
 
-response = requests.get(url)
 
-if response.status_code == 200:
-    data = response.json()
-    print("My Skills:")
+# Student API Endpoint
+@app.route('/student')
+def get_student():
+    return jsonify({
+        "student_id": "2026-00123",
+        "name": "Juan Dela Cruz",
+        "program": "BSIT",
+        "year": 1,
+        "section": "A"
+    })
 
-    for skill in data["skills"]:
-        print("-", skill)
 
-else:
-    print("Request failed.")
-    print("Status Code:", response.status_code)
+# Hello API Endpoint
+@app.route('/hello')
+def say_hello():
+    name = request.args.get('name', 'Student')
+    return jsonify({
+        "message": f"Hello, {name}!"
+    })
+
+
+# Skills API Endpoint
+@app.route('/skills')
+def get_skills():
+    return jsonify({
+        "skills": [
+            "Python",
+            "Flask",
+            "API Development"
+        ]
+    })
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=True)
