@@ -1,4 +1,3 @@
-
 import requests
 
 url = "https://yvonne-mahilum.onrender.com/skills"

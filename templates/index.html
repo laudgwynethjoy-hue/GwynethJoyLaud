@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,428 +7,101 @@
     <title>Student API Interface</title>
 
     <style>
-        * {
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            margin: 0;
-            min-height: 100vh;
-            padding: 40px 20px;
-            background: linear-gradient(
-                135deg,
-                #fff9c4,
-                #fff0a8,
-                #ffe082
-            );
-            color: #5c4b20;
-        }
-
-        .container {
-            max-width: 760px;
-            margin: auto;
-        }
-
-        .header {
-            text-align: center;
-            color: #72551b;
-            margin-bottom: 30px;
-        }
-
-        .header .icon {
-            font-size: 48px;
-            margin-bottom: 10px;
-        }
-
-        .header h1 {
-            font-size: 32px;
-            margin: 0 0 10px;
-            color: #795b12;
-        }
-
-        .header p {
-            font-size: 15px;
-            color: #826b37;
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.96);
-            padding: 28px;
-            margin-bottom: 22px;
-            border-radius: 18px;
-            border: 1px solid #fff0b3;
-            box-shadow: 0 12px 30px rgba(145, 110, 20, 0.13);
-        }
-
-        .card h2 {
-            margin-top: 0;
-            color: #b8860b;
-            font-size: 22px;
-        }
-
-        .description {
-            color: #8c7b52;
-            font-size: 14px;
-            margin-bottom: 20px;
+            font-family: Arial, sans-serif;
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 20px;
         }
 
         button {
-            padding: 12px 18px;
-            border: none;
-            border-radius: 10px;
-            background: linear-gradient(
-                135deg,
-                #fdd835,
-                #f9a825
-            );
-            color: #5c4300;
-            font-size: 14px;
-            font-weight: bold;
+            padding: 8px 14px;
+            margin: 5px;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        button:hover {
-            background: linear-gradient(
-                135deg,
-                #fbc02d,
-                #f9a825
-            );
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(249, 168, 37, 0.3);
-        }
-
-        button:active {
-            transform: scale(0.98);
         }
 
         input {
-            width: 100%;
-            padding: 13px;
-            margin-bottom: 12px;
-            border: 1px solid #f0d879;
-            border-radius: 10px;
-            font-size: 14px;
-            outline: none;
-            background: #fffdf5;
-            color: #5c4b20;
-            transition: border-color 0.2s, box-shadow 0.2s;
+            padding: 8px;
         }
 
-        input::placeholder {
-            color: #b5a574;
-        }
-
-        input:focus {
-            border-color: #fbc02d;
-            box-shadow: 0 0 0 3px rgba(251, 192, 45, 0.2);
-        }
-
-        #result,
-        #skillsResult {
+        #result {
             margin-top: 20px;
-        }
-
-        .student-detail {
-            display: flex;
-            justify-content: space-between;
-            gap: 12px;
-            padding: 13px;
-            margin-bottom: 9px;
-            background: #fffbea;
-            border-radius: 9px;
-            border-left: 4px solid #fbc02d;
-        }
-
-        .student-detail strong {
-            color: #89713b;
-        }
-
-        .student-detail span {
-            text-align: right;
-            overflow-wrap: anywhere;
-            color: #5c4b20;
-        }
-
-        #greeting {
-            margin-bottom: 0;
-            margin-top: 18px;
-            padding: 15px;
-            background: #fff8dc;
-            border: 1px solid #ffec9e;
-            border-radius: 10px;
-            color: #896404;
-            font-weight: bold;
-            display: none;
-        }
-
-        .skill-item {
-            padding: 12px 15px;
-            margin: 10px 0;
-            background: #fff8dc;
-            border-left: 4px solid #f9c846;
-            border-radius: 9px;
-            color: #87651b;
-            font-weight: 500;
-        }
-
-        .skills-heading {
-            color: #b8860b;
-            margin-top: 20px;
-        }
-
-        .footer {
-            text-align: center;
-            color: #80652b;
-            font-size: 13px;
             padding: 10px;
-        }
-
-        @media (max-width: 500px) {
-            body {
-                padding: 25px 14px;
-            }
-
-            .header h1 {
-                font-size: 26px;
-            }
-
-            .card {
-                padding: 20px;
-            }
-
-            .student-detail {
-                flex-direction: column;
-                gap: 5px;
-            }
-
-            .student-detail span {
-                text-align: left;
-            }
-
-            button {
-                max-width: 100%;
-            }
+            border: 1px solid #cccccc;
         }
     </style>
 </head>
-
 <body>
-    <div class="container">
+    <h1>Student API Interface</h1>
 
-        <header class="header">
-            <div class="icon">🎓</div>
-            <h1>Student API Portal</h1>
-            <p>Your student information, one click away.</p>
-        </header>
+    <!-- Student Information API -->
+    <button onclick="loadStudent()">
+        Load Student Information
+    </button>
 
-        <!-- Student Information API -->
-        <section class="card">
-            <h2>📚 Student Information</h2>
-            <p class="description">
-                Click below to retrieve student details from the API.
-            </p>
+    <div id="result"></div>
 
-            <button onclick="loadStudent()">
-                ✨ Load Student Information
-            </button>
+    <hr>
 
-            <div id="result" aria-live="polite"></div>
-        </section>
+    <!-- Greeting API -->
+    <h2>Greeting API</h2>
 
-        <!-- Greeting API -->
-        <section class="card">
-            <h2>💬 Greeting API</h2>
-            <p class="description">
-                Enter your first name and let the API greet you!
-            </p>
+    <input
+        type="text"
+        id="nameInput"
+        placeholder="Enter your first name"
+    >
 
-            <input
-                type="text"
-                id="nameInput"
-                placeholder="✏️ Enter your first name"
-                aria-label="Enter your first name"
-            >
+    <button onclick="sayHello()">Say Hello</button>
 
-            <button onclick="sayHello()">
-                👋 Say Hello
-            </button>
-
-            <p id="greeting" aria-live="polite"></p>
-        </section>
-
-        <!-- Custom Skills API -->
-        <section class="card">
-            <h2>🚀 My Skills API</h2>
-            <p class="description">
-                Discover my skills using my custom API endpoint.
-            </p>
-
-            <button onclick="loadSkills()">
-                💡 Load My Skills
-            </button>
-
-            <div id="skillsResult" aria-live="polite"></div>
-        </section>
-
-        <footer class="footer">
-            Made with 💛 | Student API Interface
-        </footer>
-
-    </div>
+    <p id="greeting"></p>
 
     <script>
-        // Student Information API
+        // Load Student Information
         function loadStudent() {
-            const result = document.getElementById('result');
-
-            result.textContent = '⏳ Loading student information...';
-
             fetch('/student')
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Failed to load student data');
+                        throw new Error('Failed to fetch student data');
                     }
-
                     return response.json();
                 })
                 .then(data => {
-                    result.innerHTML = `
-                        <div class="student-detail">
-                            <strong>🪪 Student ID</strong>
-                            <span></span>
-                        </div>
-                        <div class="student-detail">
-                            <strong>👤 Full Name</strong>
-                            <span></span>
-                        </div>
-                        <div class="student-detail">
-                            <strong>💻 Program</strong>
-                            <span></span>
-                        </div>
-                        <div class="student-detail">
-                            <strong>📅 Year Level</strong>
-                            <span></span>
-                        </div>
-                        <div class="student-detail">
-                            <strong>🏫 Section</strong>
-                            <span></span>
-                        </div>
-                    `;
-
-                    const values = [
-                        data.student_id,
-                        data.name,
-                        data.program,
-                        data.year,
-                        data.section
-                    ];
-
-                    result.querySelectorAll('.student-detail span')
-                        .forEach((element, index) => {
-                            element.textContent =
-                                values[index] ?? 'Not available';
-                        });
+                    document.getElementById('result').innerHTML =
+                        '<p><b>Student ID:</b> ' + data.student_id + '</p>' +
+                        '<p><b>Name:</b> ' + data.name + '</p>' +
+                        '<p><b>Program:</b> ' + data.program + '</p>' +
+                        '<p><b>Year:</b> ' + data.year + '</p>' +
+                        '<p><b>Section:</b> ' + data.section + '</p>';
                 })
                 .catch(error => {
-                    result.textContent =
-                        '❌ Unable to retrieve student information.';
+                    document.getElementById('result').textContent =
+                        'Unable to retrieve student data.';
+                    console.error(error);
                 });
         }
 
         // Greeting API
         function sayHello() {
-            const name =
-                document.getElementById('nameInput').value.trim();
-
-            const greeting = document.getElementById('greeting');
-
-            greeting.style.display = 'block';
-
-            if (!name) {
-                greeting.textContent =
-                    '😊 Please enter your first name!';
-                return;
-            }
-
-            greeting.textContent = '⏳ Preparing your greeting...';
+            const name = document.getElementById('nameInput').value;
 
             fetch('/hello?name=' + encodeURIComponent(name))
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Failed to retrieve greeting');
                     }
-
                     return response.json();
                 })
                 .then(data => {
-                    greeting.textContent = '💛 ' + data.message;
+                    document.getElementById('greeting').innerText =
+                        data.message;
                 })
                 .catch(error => {
-                    greeting.textContent =
-                        '❌ Unable to retrieve greeting. Please try again.';
+                    document.getElementById('greeting').innerText =
+                        'Unable to retrieve greeting.';
+                    console.error(error);
                 });
         }
-
-        // Custom Skills API
-        function loadSkills() {
-            const result = document.getElementById('skillsResult');
-
-            result.textContent = '⏳ Loading skills...';
-
-            fetch('/skills')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to load skills');
-                    }
-
-                    return response.json();
-                })
-                .then(data => {
-                    result.innerHTML = '';
-
-                    const heading = document.createElement('h3');
-                    heading.className = 'skills-heading';
-                    heading.textContent = data.name || 'My Skills';
-
-                    result.appendChild(heading);
-
-                    if (!Array.isArray(data.skills)) {
-                        throw new Error('Invalid skills data format');
-                    }
-
-                    if (data.skills.length === 0) {
-                        result.appendChild(
-                            document.createTextNode(
-                                'No skills available yet.'
-                            )
-                        );
-                        return;
-                    }
-
-                    data.skills.forEach(skill => {
-                        const item = document.createElement('div');
-
-                        item.className = 'skill-item';
-                        item.textContent = '⭐ ' + skill;
-
-                        result.appendChild(item);
-                    });
-                })
-                .catch(error => {
-                    result.textContent =
-                        '❌ Unable to retrieve skills. Check your /skills endpoint.';
-                });
-        }
-
-        // Press Enter to submit the greeting
-        document.getElementById('nameInput')
-            .addEventListener('keydown', event => {
-                if (event.key === 'Enter') {
-                    sayHello();
-                }
-            });
     </script>
 </body>
 </html>
